@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ResultFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textViewNameRes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="96sp" />
+
+            <TextView
+                android:id="@+id/textViewPassRes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pass"
+                android:textSize="96sp" />
+
+            <TextView
+                android:id="@+id/textViewOrderRes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order"
+                android:textSize="96sp" />
+
+            <TextView
+                android:id="@+id/textViewIncludeRes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Include"
+                android:textSize="96sp" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
