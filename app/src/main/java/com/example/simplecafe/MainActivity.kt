@@ -20,10 +20,10 @@ class MainActivity : AppCompatActivity() {
             password = it.Password
             order = it.Order
             additions = it.Additions
-            if (savedInstanceState==null)
-            {
-                supportFragmentManager.beginTransaction().add(R.id.frameLayoutMain,AuthorizationFragment.newInstance(),"AuthorizationFragment").commit()
-            }
+        }
+        if (savedInstanceState==null)
+        {
+            supportFragmentManager.beginTransaction().add(R.id.frameLayoutMain,AuthorizationFragment.newInstance(),"AuthorizationFragment").commit()
         }
 
     }
