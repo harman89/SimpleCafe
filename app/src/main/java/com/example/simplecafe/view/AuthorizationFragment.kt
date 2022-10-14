@@ -1,4 +1,4 @@
-package com.example.simplecafe
+package com.example.simplecafe.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,11 +9,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.simplecafe.CafeViewModel
+import com.example.simplecafe.data.model.OrderData
+import com.example.simplecafe.R
 import com.example.simplecafe.databinding.FragmentAuthorizationBinding
 import java.lang.Exception
 
 class AuthorizationFragment : Fragment() {
-    private val cafeViewModel :CafeViewModel by activityViewModels()
+    private val cafeViewModel : CafeViewModel by activityViewModels()
     private lateinit var binding :FragmentAuthorizationBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +44,7 @@ class AuthorizationFragment : Fragment() {
                         orderData.Name = login
                         orderData.Password = password
                         cafeViewModel.orderData.value = orderData
-                        val fragmentOrder :OrderFragment = OrderFragment.newInstance()
+                        val fragmentOrder : OrderFragment = OrderFragment.newInstance()
                         parentFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.frameLayoutMain,fragmentOrder).commit()
                     }
                     else

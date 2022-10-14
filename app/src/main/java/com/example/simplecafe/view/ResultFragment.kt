@@ -1,4 +1,4 @@
-package com.example.simplecafe
+package com.example.simplecafe.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
+import com.example.simplecafe.CafeViewModel
 import com.example.simplecafe.databinding.FragmentResultBinding
 
 
 class ResultFragment : Fragment() {
-    private val cafeViewModel :CafeViewModel by activityViewModels()
+    private val cafeViewModel : CafeViewModel by activityViewModels()
     private lateinit var binding : FragmentResultBinding
     private var Name :String = ""
     private var Password :String = ""

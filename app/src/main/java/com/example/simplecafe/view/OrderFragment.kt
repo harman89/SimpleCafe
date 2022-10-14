@@ -1,4 +1,4 @@
-package com.example.simplecafe
+package com.example.simplecafe.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
+import com.example.simplecafe.CafeViewModel
+import com.example.simplecafe.data.model.OrderData
+import com.example.simplecafe.R
 import com.example.simplecafe.databinding.FragmentOrderBinding
 
 class OrderFragment : Fragment() {
@@ -18,7 +21,7 @@ class OrderFragment : Fragment() {
     private var drink : String = "Coffee"
     private var type : String ="Cappuccino"
     private var additions = ""
-    private val cafeViewModel :CafeViewModel by activityViewModels()
+    private val cafeViewModel : CafeViewModel by activityViewModels()
     private lateinit var binding : FragmentOrderBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,7 +90,7 @@ class OrderFragment : Fragment() {
             orderData.Order = "$drink \n $type"
             orderData.Additions = additions
             cafeViewModel.orderData.value = orderData
-            val fragmentResult :ResultFragment = ResultFragment.newInstance()
+            val fragmentResult : ResultFragment = ResultFragment.newInstance()
             parentFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.frameLayoutMain,fragmentResult).commit()
         }
     }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.example.simplecafe.databinding.ActivityMainBinding
+import com.example.simplecafe.view.AuthorizationFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var  binding:ActivityMainBinding
@@ -11,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var name:String? = ""
+        /*var name:String? = ""
         var password:String? = ""
         var order:String? = ""
         var additions:String? = ""
@@ -20,10 +21,11 @@ class MainActivity : AppCompatActivity() {
             password = it.Password
             order = it.Order
             additions = it.Additions
-        }
+        }*/
         if (savedInstanceState==null)
         {
-            supportFragmentManager.beginTransaction().add(R.id.frameLayoutMain,AuthorizationFragment.newInstance(),"AuthorizationFragment").commit()
+            supportFragmentManager.beginTransaction().add(R.id.frameLayoutMain,
+                AuthorizationFragment.newInstance(),"AuthorizationFragment").commit()
         }
 
     }
