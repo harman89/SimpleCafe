@@ -12,12 +12,21 @@ import androidx.fragment.app.activityViewModels
 import com.example.simplecafe.CafeViewModel
 import com.example.simplecafe.data.model.OrderData
 import com.example.simplecafe.R
+import com.example.simplecafe.SimpleCafeMVP
+import com.example.simplecafe.data.model.UserModel
+import com.example.simplecafe.data.repository.UserRepositoryClass
 import com.example.simplecafe.databinding.FragmentAuthorizationBinding
+import com.example.simplecafe.presenter.UserPresenter
 import java.lang.Exception
 
-class AuthorizationFragment : Fragment() {
+class AuthorizationFragment : Fragment(),SimpleCafeMVP.AuthorizationView {
     private val cafeViewModel : CafeViewModel by activityViewModels()
     private lateinit var binding :FragmentAuthorizationBinding
+    private lateinit var presenter : SimpleCafeMVP.UserPresenter
+    private lateinit var textLogin:EditText
+    private lateinit var textPassword:EditText
+    private lateinit var btnOrder: Button
+    private lateinit var orderFragment: OrderFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,10 +37,20 @@ class AuthorizationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val textLogin:EditText = binding.editTextUserName
-        val textPassword:EditText = binding.editTextTextPassword
 
-        val btnOrder: Button = binding.buttonOrder
+        textLogin = binding.editTextUserName
+        textPassword= binding.editTextTextPassword
+        btnOrder = binding.buttonOrder
+
+        presenter = UserPresenter(UserModel(UserRepositoryClass()))
+
+        presenter.setView(this)
+        presenter.setOldFragment(this)
+        orderFragment = OrderFragment.newInstance()
+        presenter.setNewFragment(orderFragment)
+        btnOrder.setOnClickListener{presenter.buttonClicked()}
+
+        /*
         btnOrder.setOnClickListener{
             try{
                 val login = textLogin.text.toString()
@@ -56,11 +75,33 @@ class AuthorizationFragment : Fragment() {
             catch (e:Exception){
                 throw e
             }
-        }
+        }*/
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = AuthorizationFragment()
+    }
+
+    override fun getLogin(): String {
+
+        return textLogin.text.toString()
+    }
+    override fun getPassword(): String {
+        return textPassword.text.toString()
+    }
+
+    override fun setPassword(password: String?) {
+        if(password == null)
+            this.textPassword.setText("password")
+        else
+            this.textPassword.setText(password)
+    }
+
+    override fun setLogin(login: String?) {
+        if(login == null)
+            this.textLogin.setText("login")
+        else
+            this.textLogin.setText(login)
     }
 }

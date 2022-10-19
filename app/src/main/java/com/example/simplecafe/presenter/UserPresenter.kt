@@ -6,13 +6,13 @@ import com.example.simplecafe.SimpleCafeMVP
 import com.example.simplecafe.data.model.OrderData
 import com.example.simplecafe.data.model.User
 
-class UserPresenter( val model : SimpleCafeMVP.UserModel): SimpleCafeMVP.Presenter {
-    private var view :SimpleCafeMVP.View? = null
+class UserPresenter( val model : SimpleCafeMVP.UserModel): SimpleCafeMVP.UserPresenter {
+    private var view :SimpleCafeMVP.AuthorizationView? = null
     private var user : User? = null
     private var fragmentOld: Fragment? = null
     private var fragmentNew: Fragment? = null
 
-    override fun setView(view: SimpleCafeMVP.View) {
+    override fun setView(view: SimpleCafeMVP.AuthorizationView) {
         this.view = view
     }
 

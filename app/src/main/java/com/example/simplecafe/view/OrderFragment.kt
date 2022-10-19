@@ -11,9 +11,10 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.simplecafe.CafeViewModel
 import com.example.simplecafe.data.model.OrderData
 import com.example.simplecafe.R
+import com.example.simplecafe.SimpleCafeMVP
 import com.example.simplecafe.databinding.FragmentOrderBinding
 
-class OrderFragment : Fragment() {
+class OrderFragment : Fragment(), SimpleCafeMVP.OrderView {
     private var login: String? = null
     private var password: String? = null
     private val coffeeTypes = arrayOf("Cappuccino","Americano")
@@ -22,6 +23,15 @@ class OrderFragment : Fragment() {
     private var type : String ="Cappuccino"
     private var additions = ""
     private val cafeViewModel : CafeViewModel by activityViewModels()
+    private lateinit var textViewGreeting: TextView
+    private lateinit var radioButtonTea :RadioButton
+    private lateinit var radioButtonCoffee :RadioButton
+    private lateinit var checkBoxMilk : CheckBox
+    private lateinit var checkBoxSugar : CheckBox
+    private lateinit var checkBoxLemon : CheckBox
+    private lateinit var radioGroup :RadioGroup
+    private lateinit var buttonOrder :Button
+    private lateinit var spinner:Spinner
     private lateinit var binding : FragmentOrderBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,20 +43,22 @@ class OrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cafeViewModel.orderData.observe(activity as LifecycleOwner){
+        /*cafeViewModel.orderData.observe(activity as LifecycleOwner){
             login = it.Name
             password = it.Password
-        }
-        val textViewGreeting: TextView = binding.textViewGreeting
+        }*/
+        login = "test"
+        textViewGreeting = binding.textViewGreeting
+        radioButtonTea =binding.radioButtonTea
+        radioButtonCoffee =binding.radioButtonCoffee
+        checkBoxMilk = binding.checkBoxMilk
+        checkBoxSugar= binding.checkBoxSugar
+        checkBoxLemon = binding.checkBoxLemon
+        radioGroup = binding.radioGroup
+        buttonOrder =binding.buttonMakeOrderFinal
+        spinner = binding.spinner
         textViewGreeting.text="Hello, $login"
-        val radioButtonTea :RadioButton =binding.radioButtonTea
-        val radioButtonCoffee :RadioButton =binding.radioButtonCoffee
-        val checkBoxMilk : CheckBox = binding.checkBoxMilk
-        val checkBoxSugar : CheckBox = binding.checkBoxSugar
-        val checkBoxLemon : CheckBox = binding.checkBoxLemon
-        val radioGroup :RadioGroup = binding.radioGroup
-        val buttonOrder :Button =binding.buttonMakeOrderFinal
-        val spinner:Spinner = binding.spinner
+
 
         checkBoxLemon.visibility = View.GONE
         radioButtonCoffee.isChecked = true
@@ -54,42 +66,43 @@ class OrderFragment : Fragment() {
         radioGroup.setOnCheckedChangeListener{ _, _ ->
             if(radioButtonTea.isChecked) {
                 checkBoxLemon.visibility = View.VISIBLE
-                drink = radioButtonTea.text.toString()
+                drink = getTea()
                 spinner.adapter = ArrayAdapter(this.requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,teaTypes)
             }
             if(radioButtonCoffee.isChecked)
             {
-                drink = radioButtonCoffee.text.toString()
+                drink = getCoffee()
                 checkBoxLemon.isChecked=false
                 checkBoxLemon.visibility = View.GONE
                 spinner.adapter = ArrayAdapter(this.requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,coffeeTypes)
             }
-            spinner.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
+            //
+        }
+        spinner.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
 
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    type = p0?.getItemAtPosition(p2).toString()
-                }
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                type = p0?.getItemAtPosition(p2).toString()
             }
         }
         buttonOrder.setOnClickListener{
 
             if(checkBoxLemon.isChecked)
-                additions+=checkBoxLemon.text.toString()+","
+                additions+=getLemon()+","
             if(checkBoxMilk.isChecked)
-                additions+=checkBoxMilk.text.toString()+","
+                additions+=getMilk()+","
             if(checkBoxSugar.isChecked)
-                additions+=checkBoxSugar.text.toString()+","
+                additions+=getSugar()+","
             if(additions=="")
                 additions = "None"
             additions = additions.slice(0 until additions.length-1)
-            val orderData = OrderData()
-            orderData.Name = login
-            orderData.Password = password
-            orderData.Order = "$drink \n $type"
-            orderData.Additions = additions
-            cafeViewModel.orderData.value = orderData
+           // val orderData = OrderData()
+            //orderData.Name = login
+            //orderData.Password = password
+            //orderData.Order = "$drink \n $type"
+            //orderData.Additions = additions
+            //cafeViewModel.orderData.value = orderData
             val fragmentResult : ResultFragment = ResultFragment.newInstance()
             parentFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.frameLayoutMain,fragmentResult).commit()
         }
@@ -100,4 +113,29 @@ class OrderFragment : Fragment() {
         fun newInstance() =
             OrderFragment()
     }
+
+    override fun getTea(): String {
+        return radioButtonTea.text.toString()
+    }
+
+    override fun getCoffee(): String {
+        return radioButtonCoffee.text.toString()
+    }
+
+    /*override fun getType(): String {
+        return
+    }*/
+
+    override fun getLemon(): String {
+        return checkBoxLemon.text.toString()
+    }
+
+    override fun getMilk(): String {
+        return checkBoxMilk.text.toString()
+    }
+
+    override fun getSugar(): String {
+        return checkBoxSugar.text.toString()
+    }
+
 }

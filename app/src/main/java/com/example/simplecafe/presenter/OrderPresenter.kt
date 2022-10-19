@@ -6,25 +6,29 @@ import com.example.simplecafe.SimpleCafeMVP
 import com.example.simplecafe.data.model.OrderData
 import com.example.simplecafe.data.model.User
 
-class OrderPresenter(val model : SimpleCafeMVP.OrderModel):SimpleCafeMVP.Presenter {
-    private var view :SimpleCafeMVP.View? = null
+class OrderPresenter(val model : SimpleCafeMVP.OrderModel):SimpleCafeMVP.OrderPresenter {
+    private var view :SimpleCafeMVP.OrderView? = null
     private var order : OrderData? = null
     private var fragmentOld: Fragment? = null
     private var fragmentNew: Fragment? = null
-    override fun setView(view: SimpleCafeMVP.View) {
-        TODO("Not yet implemented")
+    override fun getOrder(): OrderData {
+        return  model.getOrder()
+    }
+
+    override fun setOrder() {
+        this.order = model.getOrder()
+    }
+
+    override fun setView(view: SimpleCafeMVP.OrderView) {
+        this.view = view
     }
 
     override fun buttonClicked() {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCurrentUser(): User {
-        TODO("Not yet implemented")
-    }
-
-    override fun setCurrentUser() {
-        TODO("Not yet implemented")
+        if(view!=null)
+        {
+            model.setOrder(model.getOrder().User,model.getOrder().Order,model.getOrder().Additions)
+            changeFragment(fragmentOld!!,fragmentNew!!)
+        }
     }
 
     override fun changeFragment(fragmentOld: Fragment, fragmentNew: Fragment) {

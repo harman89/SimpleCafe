@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import com.example.simplecafe.CafeViewModel
+import com.example.simplecafe.SimpleCafeMVP
 import com.example.simplecafe.databinding.FragmentResultBinding
 
 
@@ -35,8 +36,8 @@ class ResultFragment : Fragment() {
         val textOrder :TextView = binding.textViewOrderRes
         val textAdditions :TextView = binding.textViewIncludeRes
         cafeViewModel.orderData.observe(activity as LifecycleOwner){
-            textName.text = "Name: ${it.Name}"
-            textPass.text = "Password: ${it.Password}"
+            //textName.text = "Name: ${it.Name}"
+            //textPass.text = "Password: ${it.Password}"
             textOrder.text = "Order: ${it.Order}"
             textAdditions.text = "Additions: \n ${it.Additions}"
         }
@@ -46,4 +47,5 @@ class ResultFragment : Fragment() {
         fun newInstance() =
             ResultFragment()
     }
+
 }
