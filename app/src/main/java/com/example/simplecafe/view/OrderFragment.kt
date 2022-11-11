@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
-import com.example.simplecafe.CafeViewModel
-import com.example.simplecafe.data.model.OrderData
+import com.example.simplecafe.ViewModel.CafeViewModel
 import com.example.simplecafe.R
 import com.example.simplecafe.SimpleCafeMVP
+import com.example.simplecafe.data.model.OrderData
+import com.example.simplecafe.data.model.User
 import com.example.simplecafe.databinding.FragmentOrderBinding
 
 class OrderFragment : Fragment(), SimpleCafeMVP.OrderView {
@@ -43,11 +44,10 @@ class OrderFragment : Fragment(), SimpleCafeMVP.OrderView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*cafeViewModel.orderData.observe(activity as LifecycleOwner){
-            login = it.Name
-            password = it.Password
-        }*/
-        login = "test"
+        cafeViewModel.orders.observe(activity as LifecycleOwner){
+            login = it.User.login
+            password = it.User.password
+        }
         textViewGreeting = binding.textViewGreeting
         radioButtonTea =binding.radioButtonTea
         radioButtonCoffee =binding.radioButtonCoffee
@@ -97,12 +97,9 @@ class OrderFragment : Fragment(), SimpleCafeMVP.OrderView {
             if(additions=="")
                 additions = "None"
             additions = additions.slice(0 until additions.length-1)
-           // val orderData = OrderData()
-            //orderData.Name = login
-            //orderData.Password = password
-            //orderData.Order = "$drink \n $type"
-            //orderData.Additions = additions
-            //cafeViewModel.orderData.value = orderData
+            val orderData = OrderData(User(login!!,password!!),"$drink \n $type",additions)
+            cafeViewModel.setOrder(orderData)
+            cafeViewModel.getOrder()
             val fragmentResult : ResultFragment = ResultFragment.newInstance()
             parentFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.frameLayoutMain,fragmentResult).commit()
         }
@@ -121,10 +118,6 @@ class OrderFragment : Fragment(), SimpleCafeMVP.OrderView {
     override fun getCoffee(): String {
         return radioButtonCoffee.text.toString()
     }
-
-    /*override fun getType(): String {
-        return
-    }*/
 
     override fun getLemon(): String {
         return checkBoxLemon.text.toString()
