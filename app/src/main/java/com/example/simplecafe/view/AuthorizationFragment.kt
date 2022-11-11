@@ -9,24 +9,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import com.example.simplecafe.CafeViewModel
-import com.example.simplecafe.data.model.OrderData
+import androidx.lifecycle.LifecycleOwner
 import com.example.simplecafe.R
+import com.example.simplecafe.ViewModel.CafeViewModel
 import com.example.simplecafe.SimpleCafeMVP
-import com.example.simplecafe.data.model.UserModel
-import com.example.simplecafe.data.repository.UserRepositoryClass
+import com.example.simplecafe.data.model.OrderData
+import com.example.simplecafe.data.model.User
 import com.example.simplecafe.databinding.FragmentAuthorizationBinding
-import com.example.simplecafe.presenter.UserPresenter
-import java.lang.Exception
 
 class AuthorizationFragment : Fragment(),SimpleCafeMVP.AuthorizationView {
     private val cafeViewModel : CafeViewModel by activityViewModels()
     private lateinit var binding :FragmentAuthorizationBinding
-    private lateinit var presenter : SimpleCafeMVP.UserPresenter
+    //private lateinit var presenter : SimpleCafeMVP.UserPresenter
     private lateinit var textLogin:EditText
     private lateinit var textPassword:EditText
     private lateinit var btnOrder: Button
-    private lateinit var orderFragment: OrderFragment
+    //private lateinit var orderFragment: OrderFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,27 +40,17 @@ class AuthorizationFragment : Fragment(),SimpleCafeMVP.AuthorizationView {
         textPassword= binding.editTextTextPassword
         btnOrder = binding.buttonOrder
 
-        presenter = UserPresenter(UserModel(UserRepositoryClass()))
-
-        presenter.setView(this)
-        presenter.setOldFragment(this)
-        orderFragment = OrderFragment.newInstance()
-        presenter.setNewFragment(orderFragment)
-        btnOrder.setOnClickListener{presenter.buttonClicked()}
-
-        /*
         btnOrder.setOnClickListener{
             try{
-                val login = textLogin.text.toString()
-                val password = textPassword.text.toString()
+                val login = getLogin()
+                val password = getPassword()
                 if (login!="")
                 {
                     if(password!="")
                     {
-                        val orderData = OrderData()
-                        orderData.Name = login
-                        orderData.Password = password
-                        cafeViewModel.orderData.value = orderData
+                        val orderData = OrderData(User(login, password),"","")
+                        cafeViewModel.setOrder(orderData)
+                        cafeViewModel.getOrder()
                         val fragmentOrder : OrderFragment = OrderFragment.newInstance()
                         parentFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.frameLayoutMain,fragmentOrder).commit()
                     }
@@ -75,7 +63,14 @@ class AuthorizationFragment : Fragment(),SimpleCafeMVP.AuthorizationView {
             catch (e:Exception){
                 throw e
             }
-        }*/
+        }
+        cafeViewModel.orders.observe(activity as LifecycleOwner){
+            if(it!=null)
+            {
+                setLogin(it.User.login)
+                setPassword(it.User.password)
+            }
+        }
     }
 
     companion object {
