@@ -8,18 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
-import com.example.simplecafe.CafeViewModel
-import com.example.simplecafe.SimpleCafeMVP
+import com.example.simplecafe.ViewModel.CafeViewModel
 import com.example.simplecafe.databinding.FragmentResultBinding
 
 
 class ResultFragment : Fragment() {
     private val cafeViewModel : CafeViewModel by activityViewModels()
     private lateinit var binding : FragmentResultBinding
-    private var Name :String = ""
-    private var Password :String = ""
-    private var Order :String = ""
-    private var Additions :String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +30,9 @@ class ResultFragment : Fragment() {
         val textPass :TextView = binding.textViewPassRes
         val textOrder :TextView = binding.textViewOrderRes
         val textAdditions :TextView = binding.textViewIncludeRes
-        cafeViewModel.orderData.observe(activity as LifecycleOwner){
-            //textName.text = "Name: ${it.Name}"
-            //textPass.text = "Password: ${it.Password}"
+        cafeViewModel.orders.observe(activity as LifecycleOwner){
+            textName.text = "Name: ${it.User.login}"
+            textPass.text = "Password: ${it.User.password}"
             textOrder.text = "Order: ${it.Order}"
             textAdditions.text = "Additions: \n ${it.Additions}"
         }
